@@ -10,8 +10,7 @@
     "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
     "generate": "npx drizzle-kit generate:mysql",
     "db:push": "npx drizzle-kit push:mysql",
-    "studio": "npx drizzle-kit studio",
-    "ci": "npm install && npm run build"
+    "studio": "npx drizzle-kit studio"
   },
   "keywords": [],
   "author": "",

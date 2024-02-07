@@ -1,0 +1,1 @@
+ALTER TABLE `testing` ADD `address` varchar(256) NOT NULL;

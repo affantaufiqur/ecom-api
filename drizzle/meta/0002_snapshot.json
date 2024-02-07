@@ -1,0 +1,65 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "id": "5756dfe6-944b-41c8-aab6-6dc02c495ad0",
+  "prevId": "d13176cb-9083-41d2-baec-9a481ac27db5",
+  "tables": {
+    "testing": {
+      "name": "testing",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "pub": {
+          "name": "pub",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "testing_table_id_table_id_fk": {
+          "name": "testing_table_id_table_id_fk",
+          "tableFrom": "testing",
+          "tableTo": "table",
+          "columnsFrom": [
+            "table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "testing_id": {
+          "name": "testing_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

@@ -1,2 +1,3 @@
-const hello = "hello";
-const intentionalError = a;
+import { db } from "./config/db.js";
+
+console.log(db);

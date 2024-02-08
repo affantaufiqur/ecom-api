@@ -12,5 +12,5 @@ const connection = await createConnection({
 });
 
 const db = drizzle(connection);
-await migrate(db, { migrationsFolder: "drizzle" });
+await migrate(db, { migrationsFolder: "src/drizzle" });
 await connection.end();

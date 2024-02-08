@@ -9,7 +9,7 @@
     "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
     "db:generate": "npx drizzle-kit generate:mysql",
     "db:push": "npx drizzle-kit push:mysql",
-    "db:migrate": "npx tsx db/migrate.ts",
+    "db:migrate": "npx tsx src/db/migrate.ts",
     "db:studio": "npx drizzle-kit studio",
     "lint": "eslint ."
   },

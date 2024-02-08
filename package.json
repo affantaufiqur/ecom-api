@@ -7,10 +7,10 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
-    "generate": "npx drizzle-kit generate:mysql",
+    "db:generate": "npx drizzle-kit generate:mysql",
     "db:push": "npx drizzle-kit push:mysql",
     "db:migrate": "npx tsx db/migrate.ts",
-    "studio": "npx drizzle-kit studio",
+    "db:studio": "npx drizzle-kit studio",
     "lint": "eslint ."
   },
   "keywords": [],

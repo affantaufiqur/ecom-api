@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2";
 import * as schema from "../db/schema.js";
 
-export const connection = mysql.createConnection({
+export const connection = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "root",

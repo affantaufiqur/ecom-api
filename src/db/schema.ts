@@ -1,5 +1,5 @@
-import { datetime, mysqlTable, varchar } from "drizzle-orm/mysql-core";
 import { relations } from "drizzle-orm";
+import { datetime, mysqlTable, varchar } from "drizzle-orm/mysql-core";
 
 import { ulid } from "ulidx";
 

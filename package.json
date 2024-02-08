@@ -10,7 +10,8 @@
     "generate": "npx drizzle-kit generate:mysql",
     "db:push": "npx drizzle-kit push:mysql",
     "db:migrate": "npx tsx db/migrate.ts",
-    "studio": "npx drizzle-kit studio"
+    "studio": "npx drizzle-kit studio",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -18,8 +19,11 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.1",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "concurrently": "^8.2.2",
     "drizzle-kit": "^0.20.14",
+    "eslint": "^8.56.0",
     "nodemon": "^3.0.2",
     "prettier": "3.2.5",
     "typescript": "^5.3.3"

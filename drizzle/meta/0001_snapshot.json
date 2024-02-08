@@ -1,9 +1,105 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "d13176cb-9083-41d2-baec-9a481ac27db5",
-  "prevId": "e9c70116-eafe-41b4-9bd5-7bb4603405bc",
-  "tables": {},
+  "id": "d77faeb4-fbd0-409f-810d-d84fee4894a7",
+  "prevId": "7440f7ae-61ef-4cff-b852-8ea16753158f",
+  "tables": {
+    "random_user": {
+      "name": "random_user",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "random_user_id": {
+          "name": "random_user_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "testing": {
+      "name": "testing",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "pub": {
+          "name": "pub",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "address": {
+          "name": "address",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "testing_table_id_random_user_id_fk": {
+          "name": "testing_table_id_random_user_id_fk",
+          "tableFrom": "testing",
+          "tableTo": "random_user",
+          "columnsFrom": [
+            "table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "testing_id": {
+          "name": "testing_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    }
+  },
   "schemas": {},
   "_meta": {
     "schemas": {},

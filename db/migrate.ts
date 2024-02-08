@@ -1,8 +1,8 @@
 import { migrate } from "drizzle-orm/mysql2/migrator";
-import mysql2 from "mysql2/promise";
+import { createConnection } from "mysql2/promise";
 import { drizzle } from "drizzle-orm/mysql2";
 
-const con = await mysql2.createConnection({
+const con = await createConnection({
   host: "localhost",
   user: "root",
   password: "root",

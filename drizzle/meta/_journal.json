@@ -3,31 +3,17 @@
   "dialect": "mysql",
   "entries": [
     {
+      "idx": 0,
+      "version": "5",
+      "when": 1707314702229,
+      "tag": "0000_smiling_veda",
+      "breakpoints": true
+    },
+    {
       "idx": 1,
       "version": "5",
-      "when": 1707311432882,
-      "tag": "0001_charming_arclight",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1707311784617,
-      "tag": "0002_quick_the_fury",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1707312759761,
-      "tag": "0003_clear_prima",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1707312895346,
-      "tag": "0004_eminent_mandroid",
+      "when": 1707314768944,
+      "tag": "0001_typical_black_tom",
       "breakpoints": true
     }
   ]

@@ -1,0 +1,1 @@
+ALTER TABLE `testing` ADD `phone_number` varchar(256) NOT NULL;

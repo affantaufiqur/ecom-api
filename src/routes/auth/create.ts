@@ -2,23 +2,27 @@ import { Router } from "express";
 import { db } from "../../config/db.js";
 import { users } from "../../db/schema.js";
 import argon2 from "argon2";
-import { insertUser } from "../../types/insert.types.js";
+import { insertUserSchema } from "../../types/insert.types.js";
 import { handleValidationError } from "../../validation/error.js";
 
 const app = Router();
 
+// TODO: Generate token and return it
 app.post("/register", async (req, res) => {
   try {
-    const user = insertUser.safeParse(req.body);
-    if (!user.success) {
-      const errMessage = handleValidationError(user.error);
+    const parseUserRequest = insertUserSchema.safeParse(req.body);
+    if (!parseUserRequest.success) {
+      const errMessage = handleValidationError(parseUserRequest.error);
       res.status(400).json({ error: "validation error", message: errMessage });
       return;
     }
-    const hash = await argon2.hash(user.data.password);
+
+    const { email, password } = parseUserRequest.data;
+    const hashPassword = await argon2.hash(password);
+
     await db.insert(users).values({
-      email: user.data.password,
-      password: hash,
+      email,
+      password: hashPassword,
     });
     res.status(200).json({ message: "User created" });
     return;

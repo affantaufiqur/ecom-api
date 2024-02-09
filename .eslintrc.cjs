@@ -13,5 +13,11 @@ module.exports = {
   },
   rules: {
     "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: false,
+      },
+    ],
   },
 };

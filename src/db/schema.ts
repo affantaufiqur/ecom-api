@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { datetime, mysqlTable, varchar } from "drizzle-orm/mysql-core";
+import { datetime, text, mysqlTable, varchar } from "drizzle-orm/mysql-core";
 
 import { ulid } from "ulidx";
 
@@ -8,7 +8,7 @@ export const users = mysqlTable("users", {
     .notNull()
     .primaryKey()
     .$defaultFn(() => ulid()),
-  email: varchar("email", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
   password: varchar("password", { length: 255 }).notNull(),
   created_at: datetime("created_at", { mode: "date" })
     .notNull()
@@ -23,7 +23,7 @@ export const tokens = mysqlTable("tokens", {
     .notNull()
     .primaryKey()
     .$defaultFn(() => ulid()),
-  token: varchar("token", { length: 255 }).notNull(),
+  token: text("token").notNull(),
   user_id: varchar("user_id", { length: 255 }).references(() => users.id),
   expires_at: datetime("expires_at", { mode: "date" }).notNull(),
   created_at: datetime("created_at", { mode: "date" })

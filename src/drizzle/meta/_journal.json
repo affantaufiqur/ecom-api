@@ -15,6 +15,20 @@
       "when": 1707403943954,
       "tag": "0001_naive_venom",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1707547324210,
+      "tag": "0002_gray_ken_ellis",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1707551497309,
+      "tag": "0003_curly_thaddeus_ross",
+      "breakpoints": true
     }
   ]
 }

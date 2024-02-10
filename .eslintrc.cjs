@@ -11,6 +11,7 @@ module.exports = {
   env: {
     node: true,
   },
+  ignorePatterns: ["**/build/**", "**/node_modules/**", "tsconfig.json", ".eslintrc.cjs"],
   rules: {
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/no-misused-promises": [

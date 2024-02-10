@@ -12,7 +12,11 @@
     "outDir": "./build",
     "rootDir": "./",
     "lib": ["esnext"],
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["**/*.ts", "types/*.ts"],
   "exclude": ["node_modules"]

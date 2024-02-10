@@ -12,9 +12,9 @@ app.post("/register", async (req, res) => {
   try {
     const parseUserRequest = insertUserSchema.safeParse(req.body);
     if (!parseUserRequest.success) {
-      const errMessage = handleValidationError(parseUserRequest.error);
-      res.status(400).json({ error: "validation error", message: errMessage });
-      return;
+      return handleValidationError(({ error, message }) => {
+        return res.status(400).json({ error, message });
+      }, parseUserRequest.error);
     }
 
     const { email, password } = parseUserRequest.data;

@@ -5,7 +5,8 @@
   "main": "./build/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc --project tsconfig.json",
+    "prepare": "ts-patch install -s",
+    "build": "tspc --project tsconfig.json",
     "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
     "db:generate": "npx drizzle-kit generate:mysql",
     "db:push": "npx drizzle-kit push:mysql",
@@ -26,7 +27,9 @@
     "eslint": "^8.56.0",
     "nodemon": "^3.0.2",
     "prettier": "3.2.5",
-    "typescript": "^5.3.3"
+    "ts-patch": "^3.1.2",
+    "typescript": "^5.3.3",
+    "typescript-transform-paths": "^3.4.6"
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.5",

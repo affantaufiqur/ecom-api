@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { db } from "../../config/db.js";
-import { users } from "../../db/schema.js";
+import { db } from "../config/db.js";
+import { users } from "../db/schema.js";
 import argon2 from "argon2";
-import { insertUserSchema } from "../../types/insert.types.js";
-import { handleValidationError } from "../../validation/error.js";
+import { insertUserSchema } from "../types/insert.types.js";
+import { handleValidationError } from "../validation/error.js";
 
 const app = Router();
 

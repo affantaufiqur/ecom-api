@@ -12,8 +12,10 @@ async function seed() {
         password: hashPassword,
       });
     }
+    return;
   } catch (err) {
     console.log(err);
+    return;
   }
 }
 

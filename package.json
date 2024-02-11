@@ -7,7 +7,7 @@
   "scripts": {
     "prepare": "ts-patch install -s",
     "build": "tspc --project tsconfig.json",
-    "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
+    "dev": "concurrently \"tspc --watch\" \"nodemon build/index.js\"",
     "db:generate": "npx drizzle-kit generate:mysql",
     "db:push": "npx drizzle-kit push:mysql",
     "db:migrate": "npx tsx src/db/migrate.ts",

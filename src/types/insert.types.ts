@@ -1,4 +1,4 @@
-import { users } from "../db/schema/user.js";
+import { users } from "../db/schema/schema.js";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 

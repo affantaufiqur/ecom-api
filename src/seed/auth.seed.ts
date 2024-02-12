@@ -1,5 +1,6 @@
 import { db } from "@/config/db.js";
 import { users } from "@/db/schema.js";
+import { ROLE } from "@/utils/shared.js";
 import argon2 from "argon2";
 
 async function seed() {
@@ -10,6 +11,8 @@ async function seed() {
       await db.insert(users).values({
         email: mail,
         password: hashPassword,
+        role: ROLE.regular_user.name,
+        role_level: ROLE.regular_user.level,
       });
     }
     return;

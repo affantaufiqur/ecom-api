@@ -1,5 +1,5 @@
 import { db } from "@/config/db.js";
-import { users } from "@/db/schema.js";
+import { users } from "@/db/schema/user.js";
 import { eq } from "drizzle-orm";
 
 export async function getUserFromDb(email: string) {

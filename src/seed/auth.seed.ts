@@ -1,5 +1,5 @@
 import { db } from "@/config/db.js";
-import { users } from "@/db/schema.js";
+import { users } from "@/db/schema/user.js";
 import { ROLE } from "@/utils/shared.js";
 import argon2 from "argon2";
 

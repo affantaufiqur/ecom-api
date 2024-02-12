@@ -8,6 +8,13 @@
       "when": 1707708272976,
       "tag": "0000_silky_stryfe",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1707720572395,
+      "tag": "0001_special_hellion",
+      "breakpoints": true
     }
   ]
 }

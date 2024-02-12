@@ -1,6 +1,6 @@
 import { db } from "@/config/db.js";
 import { getUserFromDb } from "@/data-access/auth.access.js";
-import { tokens, users } from "@/db/schema/user.js";
+import { tokens, users } from "@/db/schema/schema.js";
 import { insertUserSchema, loginUserSchema } from "@/types/insert.types.js";
 import { tokenHandler } from "@/utils/jwt.js";
 import { getRoleLevel } from "@/utils/shared.js";

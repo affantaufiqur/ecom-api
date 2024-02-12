@@ -109,8 +109,14 @@ app.post("/login", async (req, res) => {
           user_id: getUser.id,
           expires_at: new Date(expiry * 1000), // Convert Unix timestamp to JavaScript Date object
         });
+        const verify = jwt.verify(refreshToken, process.env.JWT_SECRET!) as jwt.JwtPayload;
+        if (verify.exp! < Math.floor(Date.now() / 1000)) {
+          const { refreshToken } = tokenHandler(finalUser);
+          return res.status(200).json({ user: finalUser, access_token: accessToken, refresh_token: refreshToken });
+        }
         return res.status(200).json({ user: finalUser, access_token: accessToken, refresh_token: refreshToken });
       }
+
       return res.status(200).json({ user: finalUser, access_token: accessToken, refresh_token: getRefreshToken.token });
     });
   } catch (err) {

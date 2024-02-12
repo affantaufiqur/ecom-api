@@ -1,6 +1,5 @@
 import { relations } from "drizzle-orm";
-import { datetime, text, mysqlTable, varchar } from "drizzle-orm/mysql-core";
-
+import { datetime, int, mysqlTable, text, varchar } from "drizzle-orm/mysql-core";
 import { ulid } from "ulidx";
 
 export const users = mysqlTable("users", {
@@ -10,6 +9,8 @@ export const users = mysqlTable("users", {
     .$defaultFn(() => ulid()),
   email: varchar("email", { length: 255 }).notNull().unique(),
   password: varchar("password", { length: 255 }).notNull(),
+  role: varchar("role", { length: 255 }).notNull(),
+  role_level: int("role_level").notNull(),
   created_at: datetime("created_at", { mode: "date" })
     .notNull()
     .$defaultFn(() => new Date()),

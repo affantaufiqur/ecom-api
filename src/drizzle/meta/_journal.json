@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1707403752370,
-      "tag": "0000_rich_quicksilver",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1707403943954,
-      "tag": "0001_naive_venom",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1707547324210,
-      "tag": "0002_gray_ken_ellis",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1707551497309,
-      "tag": "0003_curly_thaddeus_ross",
+      "when": 1707708272976,
+      "tag": "0000_silky_stryfe",
       "breakpoints": true
     }
   ]

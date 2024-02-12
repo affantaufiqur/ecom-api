@@ -8,3 +8,7 @@ export const ROLE = {
     level: 2,
   },
 };
+
+export function getRoleLevel(role: keyof typeof ROLE) {
+  return ROLE[role].level;
+}

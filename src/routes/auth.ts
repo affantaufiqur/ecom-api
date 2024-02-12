@@ -1,7 +1,9 @@
 import { db } from "@/config/db.js";
+import { getUserFromDb } from "@/data-access/auth.access.js";
 import { tokens, users } from "@/db/schema.js";
-import { insertUserSchema } from "@/types/insert.types.js";
+import { insertUserSchema, loginUserSchema } from "@/types/insert.types.js";
 import { tokenHandler } from "@/utils/jwt.js";
+import { getRoleLevel } from "@/utils/shared.js";
 import { handleValidationError } from "@/validation/error.js";
 import argon2 from "argon2";
 import "dotenv/config";
@@ -20,19 +22,18 @@ app.post("/register", async (req, res) => {
       }, parseUserRequest.error);
     }
 
-    const { email, password } = parseUserRequest.data;
+    const { email, password, role } = parseUserRequest.data;
     const hashPassword = await argon2.hash(password);
-
+    const findUser = await getUserFromDb(email);
     await db.transaction(async (tx) => {
-      const findUser = await tx.query.users.findFirst({
-        where: eq(users.email, email),
-      });
       if (findUser) {
         return res.status(400).json({ error: "User already exist" });
       }
       await tx.insert(users).values({
         email,
         password: hashPassword,
+        role,
+        role_level: getRoleLevel(role),
       });
 
       // need to make query again to get user after insert
@@ -43,6 +44,8 @@ app.post("/register", async (req, res) => {
         columns: {
           id: true,
           email: true,
+          role: true,
+          role_level: true,
         },
       });
 
@@ -56,7 +59,6 @@ app.post("/register", async (req, res) => {
         user_id: user?.id,
         expires_at: new Date(expiry * 1000), // Convert Unix timestamp to JavaScript Date object
       });
-
       return res.json({ user, acces_token: accessToken, refresh_token: refreshToken });
     });
     return;
@@ -69,30 +71,29 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   try {
-    const parseUserRequest = insertUserSchema.safeParse(req.body);
+    const parseUserRequest = loginUserSchema.safeParse(req.body);
     if (!parseUserRequest.success) {
       return handleValidationError(({ error, message }) => {
         return res.status(400).json({ error, message });
       }, parseUserRequest.error);
     }
     const { email, password } = parseUserRequest.data;
+    const getUser = await getUserFromDb(email);
+    if (!getUser) {
+      return res.status(400).json({ error: "User not found" });
+    }
     await db.transaction(async (tx) => {
-      const getUser = await tx.query.users.findFirst({
-        where: eq(users.email, email),
-      });
-      if (!getUser) {
-        return res.status(400).json({ error: "User not found" });
-      }
       const comparePassword = await argon2.verify(getUser.password, password);
       if (!comparePassword) {
         return res.status(400).json({ error: "Invalid password" });
       }
-      // generate new access token
       const finalUser = {
         id: getUser.id,
         email: getUser.email,
       };
+      // generate new access token
       const { accessToken } = tokenHandler(finalUser);
+
       // check if refresh_token already exist
       // if not generate one
       const getRefreshToken = await tx.query.tokens.findFirst({

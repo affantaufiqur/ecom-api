@@ -8,6 +8,7 @@
     "prepare": "ts-patch install -s",
     "build": "tspc --project tsconfig.json",
     "dev": "concurrently \"tspc --watch\" \"nodemon build/index.js\"",
+    "dev:ts": "tsx watch ./index.ts",
     "db:generate": "npx drizzle-kit generate:mysql",
     "db:push": "npx drizzle-kit push:mysql",
     "db:migrate": "npx tsx src/db/migrate.ts",
@@ -28,6 +29,7 @@
     "nodemon": "^3.0.2",
     "prettier": "3.2.5",
     "ts-patch": "^3.1.2",
+    "tsx": "^4.7.1",
     "typescript": "^5.3.3",
     "typescript-transform-paths": "^3.4.6"
   },

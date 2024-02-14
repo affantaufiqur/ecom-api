@@ -90,6 +90,8 @@ app.post("/login", async (req, res) => {
       const finalUser = {
         id: getUser.id,
         email: getUser.email,
+        role: getUser.role,
+        role_level: getUser.role_level,
       };
       // generate new access token
       const { accessToken } = tokenHandler(finalUser);

@@ -53,7 +53,7 @@ export const products = mysqlTable("products", {
     .$defaultFn(() => ulid()),
   name: varchar("name", { length: 255 }).notNull(),
   price: float("price").notNull().default(0),
-  quanity: int("quantity").notNull().default(0),
+  quantity: int("quantity").notNull().default(0),
   description: varchar("description", { length: 255 }).notNull(),
   seller_id: varchar("seller_id", { length: 255 }).references(() => users.id),
   created_at: datetime("created_at", { mode: "date" })

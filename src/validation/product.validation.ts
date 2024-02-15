@@ -14,4 +14,12 @@ export const insertProductSchema = z.object({
   description: z.string().min(1, "Description is required").max(200, "Description must be less than 200 characters"),
 });
 
+export const updateProductSchema = z.object({
+  name: z.string().optional(),
+  price: z.number().optional(),
+  quantity: z.number().optional(),
+  description: z.string().optional(),
+});
+
+export type inferUpdateProduct = z.infer<typeof updateProductSchema>;
 export type InferSelectProducts = typeof products.$inferSelect;

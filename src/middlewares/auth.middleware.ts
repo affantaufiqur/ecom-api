@@ -14,9 +14,9 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
     jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
       if (err) return res.status(401).json({ message: "Unauthorized", error: err.message });
       const token = decoded as jwt.JwtPayload;
-      //TODO: Please check this
       req.user = token.user as UserInfo;
       next();
+      return;
     });
     return;
   } catch (error) {
@@ -29,7 +29,7 @@ function roleLevelMiddleware(role: keyof typeof ROLE) {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       const { role_level } = req.user!;
-      if (role_level! <= ROLE[role].level) return res.status(403).json({ message: "Forbidden" });
+      if (role_level! < ROLE[role].level) return res.status(403).json({ message: "Forbidden" });
       next();
     } catch (error) {
       console.log(error);

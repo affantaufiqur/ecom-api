@@ -15,6 +15,13 @@
       "when": 1707720572395,
       "tag": "0001_special_hellion",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1708070974612,
+      "tag": "0002_majestic_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }

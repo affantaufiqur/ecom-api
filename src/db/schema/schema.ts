@@ -63,3 +63,33 @@ export const products = mysqlTable("products", {
     .notNull()
     .$defaultFn(() => new Date()),
 });
+
+export const carts = mysqlTable("cart", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => ulid()),
+  user_id: varchar("user_id", { length: 255 }).references(() => users.id),
+  created_at: datetime("created_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updated_at: datetime("updated_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const cart_items = mysqlTable("cart_items", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => ulid()),
+  cart_id: varchar("cart_id", { length: 255 }).references(() => carts.id),
+  product_id: varchar("product_id", { length: 255 }).references(() => products.id),
+  quantity: int("quantity").notNull().default(0),
+  created_at: datetime("created_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updated_at: datetime("updated_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});

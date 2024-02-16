@@ -5,6 +5,7 @@ import { cart_items, carts, products } from "@/db/schema/schema.js";
 import { eq, sql } from "drizzle-orm";
 import { insertCartSchema } from "@/validation/cart.validation.js";
 import { handleValidationError } from "@/validation/error.js";
+import { getCartById } from "@/data-access/cart.access";
 
 const app = Router();
 
@@ -40,20 +41,26 @@ app.post("/cart", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "You cannot add your own product" });
     if (checkProduct.quantity < quantity) return res.status(400).json({ message: "Insufficient quantity" });
 
-    const checkCart = await db.query.carts.findFirst({
-      where: eq(carts.user_id, req.user.id!),
-    });
+    const checkCart = await getCartById(req.user.id!);
 
-    if (!checkCart) {
-      await db.insert(carts).values({ user_id: req.user.id! });
-    } else {
+    if (checkCart) {
       await db
         .update(cart_items)
         .set({ quantity })
         .where(sql`${cart_items.cart_id} = ${checkCart.id} AND ${cart_items.product_id} = ${product_id}`);
+      return res.status(200).json({ message: "Product in cart updated successfully" });
     }
+    await db.insert(carts).values({
+      user_id: req.user.id,
+    });
 
-    await db.insert(cart_items).values({ cart_id: checkCart?.id, product_id, quantity });
+    const getNewInsertedCart = await getCartById(req.user.id!);
+
+    await db.insert(cart_items).values({
+      cart_id: getNewInsertedCart?.id,
+      product_id,
+      quantity,
+    });
 
     return res.status(200).json({ message: "Cart added successfully" });
   } catch (err) {

@@ -5,7 +5,7 @@ import { cart_items, carts, products } from "@/db/schema/schema.js";
 import { eq, sql } from "drizzle-orm";
 import { insertCartSchema } from "@/validation/cart.validation.js";
 import { handleValidationError } from "@/validation/error.js";
-import { getCartById } from "@/data-access/cart.access";
+import { getCartById } from "@/data-access/cart.access.js";
 
 const app = Router();
 

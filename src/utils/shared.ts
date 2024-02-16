@@ -14,3 +14,5 @@ export const ROLE_NAME = Object.keys(ROLE) as unknown as keyof typeof ROLE;
 export function getRoleLevel(role: keyof typeof ROLE) {
   return ROLE[role].level;
 }
+
+export const CATEGORY = ["electronics", "fashion", "home", "grocery", "hardware", "other"];

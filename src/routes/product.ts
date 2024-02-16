@@ -40,6 +40,8 @@ app.get("/products", async (req, res) => {
       countProductData = await db.select({ value: count() }).from(products);
     }
 
+    if (productData.length < 1) return res.status(404).json({ message: "Product not found" });
+
     const totalCount = countProductData[0].value;
     const totalPage = Math.ceil(totalCount / limit);
     const nextPage = pageCount < totalPage ? pageCount + 1 : null;
@@ -68,6 +70,20 @@ app.post("/products", authMiddleware, roleLevelMiddleware(ROLE.seller.name), asy
     const finalData = { ...parseInput.data, seller_id: req.user?.id };
     await db.insert(products).values(finalData);
     return res.status(200).json({ message: "Product added successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get("/product/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await db.query.products.findFirst({
+      where: eq(products.id, id),
+    });
+    if (!product) return res.status(404).json({ message: "Product not found" });
+    return res.status(200).json(product);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Internal server error" });

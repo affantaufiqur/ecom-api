@@ -99,8 +99,8 @@ app.delete("/products/:id", authMiddleware, roleLevelMiddleware(ROLE.seller.name
     if (!product) return res.status(404).json({ message: "Product not found" });
     const isProductBySeller = product.seller_id === req.user?.id;
     if (!isProductBySeller) return res.status(403).json({ message: "Forbidden" });
-    await db.delete(products).where(eq(products.id, id));
-    return res.status(200).json({ message: "Product deleted successfully" });
+    await db.update(products).set({ quantity: 0 }).where(eq(products.id, id));
+    return res.status(200).json({ message: "Product quantity set to 0" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Internal server error" });

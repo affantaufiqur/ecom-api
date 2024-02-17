@@ -23,17 +23,18 @@ app.post("/register", async (req, res) => {
     }
 
     const { email, password, role } = parseUserRequest.data;
-    const hashPassword = await argon2.hash(password);
     const findUser = await getUserFromDb(email);
     await db.transaction(async (tx) => {
       if (findUser) {
         return res.status(400).json({ error: "User already exist" });
       }
+      const role_level = getRoleLevel(role);
+      const hashPassword = await argon2.hash(password);
       await tx.insert(users).values({
         email,
         password: hashPassword,
         role,
-        role_level: getRoleLevel(role),
+        role_level,
       });
 
       // need to make query again to get user after insert
@@ -59,6 +60,9 @@ app.post("/register", async (req, res) => {
         user_id: user?.id,
         expires_at: new Date(expiry * 1000), // Convert Unix timestamp to JavaScript Date object
       });
+
+      // automatically set user
+      req.user = user!;
       return res.json({ user, acces_token: accessToken, refresh_token: refreshToken });
     });
     return;
@@ -138,12 +142,12 @@ app.get("/current-user", (req, res) => {
       return res.status(401).json({ error: "Invalid token" });
     }
     const token = bearer.split(" ")[1];
-    const user = jwt.verify(token, process.env.JWT_SECRET!) as jwt.JwtPayload;
-    const leeway = Math.floor(Date.now() / 1000) - 60;
-    if (Date.now() + leeway < user.exp! * 1000) {
-      return res.status(401).json({ error: "Token expired, please login again" });
-    }
-    return res.status(200).json(user);
+    return jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ error: "Invalid token" });
+      }
+      return res.status(200).json(decoded);
+    });
   } catch (err) {
     if ((err as { name: string; message: string }).message === "invalid signature") {
       return res.status(401).json({ error: "Invalid token" });

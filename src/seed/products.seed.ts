@@ -11,7 +11,7 @@ import { eq } from "drizzle-orm";
   for (let i = 0; i < LIMIT; i++) {
     const name = faker.commerce.productName();
     const description = faker.commerce.productDescription();
-    const price = Number(faker.commerce.price({ min: 1, max: 999999, dec: 0 }));
+    const price = Number(faker.commerce.price({ min: 1, max: 9999, dec: 0 }));
     const quantity = Math.floor(Math.random() * 9999) + 1;
     const { id } = category[Math.floor(Math.random() * category.length)];
     const { id: seller_id } = seller[Math.floor(Math.random() * seller.length)];

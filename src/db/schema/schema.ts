@@ -55,7 +55,19 @@ export const products = mysqlTable("products", {
   price: float("price").notNull().default(0),
   quantity: int("quantity").notNull().default(0),
   description: varchar("description", { length: 255 }).notNull(),
+  category_id: int("category_id").references(() => category.id),
   seller_id: varchar("seller_id", { length: 255 }).references(() => users.id),
+  created_at: datetime("created_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updated_at: datetime("updated_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const category = mysqlTable("categories", {
+  id: int("id").notNull().autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull().unique(),
   created_at: datetime("created_at", { mode: "date" })
     .notNull()
     .$defaultFn(() => new Date()),

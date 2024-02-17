@@ -116,15 +116,22 @@ app.post("/login", async (req, res) => {
           user_id: getUser.id,
           expires_at: new Date(expiry * 1000), // Convert Unix timestamp to JavaScript Date object
         });
-        const verify = jwt.verify(refreshToken, process.env.JWT_SECRET!) as jwt.JwtPayload;
-        if (verify.exp! < Math.floor(Date.now() / 1000)) {
-          const { refreshToken } = tokenHandler(finalUser);
-          return res.status(200).json({ user: finalUser, access_token: accessToken, refresh_token: refreshToken });
-        }
-        return res.status(200).json({ user: finalUser, access_token: accessToken, refresh_token: refreshToken });
+        return res.json({ user: finalUser, acces_token: accessToken, refresh_token: refreshToken });
       }
-
-      return res.status(200).json({ user: finalUser, access_token: accessToken, refresh_token: getRefreshToken.token });
+      // check if refresh token expired
+      return jwt.verify(getRefreshToken.token, process.env.JWT_SECRET!, async (err) => {
+        if (err) {
+          const expiry = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60; // Expiry time in Unix timestamp (seconds)
+          const { refreshToken } = tokenHandler(finalUser);
+          await tx.insert(tokens).values({
+            token: refreshToken,
+            user_id: getUser.id,
+            expires_at: new Date(expiry * 1000), // Convert Unix timestamp to JavaScript Date object
+          });
+          return res.json({ user: finalUser, acces_token: accessToken, refresh_token: refreshToken });
+        }
+        return res.json({ user: finalUser, acces_token: accessToken, refresh_token: getRefreshToken.token });
+      });
     });
   } catch (err) {
     console.log(err);
@@ -149,9 +156,6 @@ app.get("/current-user", (req, res) => {
       return res.status(200).json(decoded);
     });
   } catch (err) {
-    if ((err as { name: string; message: string }).message === "invalid signature") {
-      return res.status(401).json({ error: "Invalid token" });
-    }
     res.status(500).json({ error: err });
     return;
   }

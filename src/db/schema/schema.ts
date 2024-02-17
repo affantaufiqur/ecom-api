@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { float, datetime, int, mysqlTable, text, varchar } from "drizzle-orm/mysql-core";
+import { float, datetime, int, mysqlTable, text, varchar, boolean } from "drizzle-orm/mysql-core";
 import { ulid } from "ulidx";
 
 export const users = mysqlTable("users", {
@@ -98,6 +98,36 @@ export const cart_items = mysqlTable("cart_items", {
   cart_id: varchar("cart_id", { length: 255 }).references(() => carts.id),
   product_id: varchar("product_id", { length: 255 }).references(() => products.id),
   quantity: int("quantity").notNull().default(0),
+  created_at: datetime("created_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updated_at: datetime("updated_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const orders = mysqlTable("orders", {
+  id: int("id").notNull().primaryKey().autoincrement(),
+  cart_id: varchar("cart_id", { length: 255 }).references(() => carts.id),
+  user_id: varchar("user_id", { length: 255 }).references(() => users.id),
+  created_at: datetime("created_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updated_at: datetime("updated_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const order_items = mysqlTable("order_items", {
+  id: int("id").notNull().primaryKey().autoincrement(),
+  invoice: varchar("invoice", { length: 255 })
+    .notNull()
+    .$defaultFn(() => "INV/" + ulid()),
+  order_id: int("order_id").references(() => orders.id),
+  cart_id: varchar("cart_id", { length: 255 }).references(() => carts.id),
+  quantity: int("quantity").notNull().default(0),
+  price: float("price").notNull().default(0),
+  is_paid: boolean("is_paid").notNull().default(false),
   created_at: datetime("created_at", { mode: "date" })
     .notNull()
     .$defaultFn(() => new Date()),

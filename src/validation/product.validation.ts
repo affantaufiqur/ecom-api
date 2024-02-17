@@ -3,6 +3,9 @@ import { products } from "@/db/schema/schema.js";
 
 export const insertProductSchema = z.object({
   name: z.string().min(1, "Product name is required"),
+  category_id: z
+    .number({ required_error: "Category is required", invalid_type_error: "Invalid category" })
+    .min(1, "Category is required"),
   price: z
     .number({ required_error: "Price is required", invalid_type_error: "Invalid price" })
     .min(1, "Price must be greater than 0")

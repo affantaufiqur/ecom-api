@@ -1,5 +1,5 @@
 import { db } from "@/config/db.js";
-import { products } from "@/db/schema/schema.js";
+import { categories, products } from "@/db/schema/schema.js";
 import { authMiddleware, roleLevelMiddleware } from "@/middlewares/auth.middleware.js";
 import { ROLE } from "@/utils/shared.js";
 import { handleValidationError } from "@/validation/error.js";
@@ -67,6 +67,10 @@ app.post("/products", authMiddleware, roleLevelMiddleware(ROLE.seller.name), asy
     if (!parseInput.success) {
       return handleValidationError(({ error, message }) => res.status(400).json({ error, message }), parseInput.error);
     }
+    const checkIfCategoryExist = await db.query.categories.findFirst({
+      where: eq(categories.id, parseInput.data.category_id),
+    });
+    if (!checkIfCategoryExist) return res.status(404).json({ message: "Category not found" });
     const finalData = { ...parseInput.data, seller_id: req.user?.id };
     await db.insert(products).values(finalData);
     return res.status(200).json({ message: "Product added successfully" });

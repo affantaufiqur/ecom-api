@@ -37,3 +37,7 @@ export const PRODUCT_CATEGORIES = [
   "Software",
   "Video Games",
 ] as const;
+
+export function formatStringToSQLPercent(string: string) {
+  return "%" + string + "%";
+}

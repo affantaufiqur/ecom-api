@@ -1,5 +1,6 @@
 node_modules
 .env
 /build/*
+payment/node_modules/*
 
 !/build/jsconfig.json

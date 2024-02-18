@@ -15,4 +15,38 @@ export function getRoleLevel(role: keyof typeof ROLE) {
   return ROLE[role].level;
 }
 
-export const CATEGORY = ["electronics", "fashion", "home", "grocery", "hardware", "other"];
+export const PRODUCT_CATEGORIES = [
+  "Electronics",
+  "Clothing",
+  "Home & Kitchen",
+  "Books",
+  "Beauty",
+  "Toys & Games",
+  "Sports & Outdoors",
+  "Automotive",
+  "Health & Personal Care",
+  "Grocery",
+  "Tools & Home Improvement",
+  "Baby",
+  "Pet Supplies",
+  "Office Products",
+  "Movies & TV",
+  "Music",
+  "Industrial & Scientific",
+  "Jewelry",
+  "Software",
+  "Video Games",
+] as const;
+
+export function formatStringToSQLPercent(string: string) {
+  return "%" + string + "%";
+}
+
+export function formatPrice(price: number) {
+  const formattedPrice = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  });
+  return formattedPrice.format(price);
+}

@@ -1,10 +1,10 @@
 import { db } from "@/config/db.js";
-import { products } from "@/db/schema/schema.js";
+import { categories, products } from "@/db/schema/schema.js";
 import { authMiddleware, roleLevelMiddleware } from "@/middlewares/auth.middleware.js";
-import { ROLE } from "@/utils/shared.js";
+import { ROLE, formatStringToSQLPercent } from "@/utils/shared.js";
 import { handleValidationError } from "@/validation/error.js";
 import { insertProductSchema, updateProductSchema } from "@/validation/product.validation.js";
-import { eq, like, count } from "drizzle-orm";
+import { eq, count, sql } from "drizzle-orm";
 import { Router } from "express";
 
 const app = Router();
@@ -16,25 +16,42 @@ app.get("/products", async (req, res) => {
       return res.status(400).json({ message: "Invalid page number" });
     }
     const pageCount = Number(query.page) < 0 ? Number(query.page) * -1 : Number(query.page) || 1;
-    const limit = 3;
+    const limit = 10;
     const offset = (pageCount - 1) * limit;
 
     let productData;
     let countProductData;
 
-    if (query.q) {
-      const { q }: { q?: string } = query;
+    if (Object.keys(query).length > 0) {
+      const { q, category, description }: { q?: string; category?: string; description?: string } = query;
+      const searchQuery = q ? formatStringToSQLPercent(q.toString()) : "";
+      const categoryQuery = category ? formatStringToSQLPercent(category.toString()) : "";
+      const descriptionQuery = description ? formatStringToSQLPercent(description.toString()) : "";
+
       productData = await db
-        .select()
+        .select({
+          id: products.id,
+          name: products.name,
+          description: products.description,
+          price: products.price,
+          quantity: products.quantity,
+          category: categories.name,
+        })
         .from(products)
-        .where(like(products.name, `%${q?.toString()}%`))
+        .leftJoin(categories, eq(products.category_id, categories.id))
+        .where(
+          sql`${products.name} like ${searchQuery} or ${categories.name} LIKE ${categoryQuery} or ${products.description} LIKE ${descriptionQuery}`,
+        )
         .limit(limit)
         .offset(pageCount ? (pageCount - 1) * limit : 0);
 
       countProductData = await db
         .select({ value: count() })
         .from(products)
-        .where(like(products.name, `%${q?.toString()}%`));
+        .leftJoin(categories, eq(products.category_id, categories.id))
+        .where(
+          sql`${products.name} LIKE ${searchQuery} or ${categories.name} LIKE ${categoryQuery} or ${products.description} LIKE ${descriptionQuery}`,
+        );
     } else {
       productData = await db.select().from(products).limit(limit).offset(offset);
       countProductData = await db.select({ value: count() }).from(products);
@@ -49,7 +66,7 @@ app.get("/products", async (req, res) => {
     return res.json({
       data: productData,
       meta: {
-        total: totalCount,
+        total_item: totalCount,
         current_page: pageCount,
         next_page: nextPage,
         total_page: totalPage,
@@ -67,6 +84,10 @@ app.post("/products", authMiddleware, roleLevelMiddleware(ROLE.seller.name), asy
     if (!parseInput.success) {
       return handleValidationError(({ error, message }) => res.status(400).json({ error, message }), parseInput.error);
     }
+    const checkIfCategoryExist = await db.query.categories.findFirst({
+      where: eq(categories.id, parseInput.data.category_id),
+    });
+    if (!checkIfCategoryExist) return res.status(404).json({ message: "Category not found" });
     const finalData = { ...parseInput.data, seller_id: req.user?.id };
     await db.insert(products).values(finalData);
     return res.status(200).json({ message: "Product added successfully" });

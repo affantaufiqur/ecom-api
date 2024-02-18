@@ -7,7 +7,7 @@ import { formatPrice } from "@/utils/shared.js";
 
 const app = Router();
 
-app.get("/order", authMiddleware, async (req, res) => {
+app.get("/orders", authMiddleware, async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthorized" });
     const getOrder = await db.query.orders.findFirst({
@@ -28,7 +28,7 @@ app.get("/order", authMiddleware, async (req, res) => {
   }
 });
 
-app.get("/order/:id", authMiddleware, async (req, res) => {
+app.get("/orders/:id", authMiddleware, async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthorized" });
     const { id } = req.params;
@@ -37,7 +37,7 @@ app.get("/order/:id", authMiddleware, async (req, res) => {
     });
     if (!orderItems) return res.status(404).json({ message: "Order item not found" });
     const checkCart = await db.query.carts.findFirst({
-      where: eq(carts.id, req.user.id),
+      where: eq(carts.user_id, req.user.id),
     });
     if (!checkCart) return res.status(404).json({ message: "Order not found, because no order were made" });
     const ifUserValid = orderItems.cart_id === checkCart.id;
